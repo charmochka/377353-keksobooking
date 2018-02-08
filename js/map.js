@@ -30,10 +30,6 @@ var createPin = function (promo) {
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   pinTemplate.querySelector('img').src = promo.author.avatar;
 
-  // Не могу получить информацию о height и width для пина, чтобы расчитать координаты, даже если прописать принудительно (строка ниже) ничего не происходит)
-  // pinTemplate.style.cssText = 'width:100px; height:100px;';
-  // var pinHeight = getComputedStyle(pinTemplate).height;
-  // var pinWidth = getComputedStyle(pinTemplate).width;
 
   pinTemplate.style = 'left:' + randomInteger(MIN_X, MAX_X) + 'px; top: ' + randomInteger(MIN_Y, MAX_Y) + 'px;';
   var pindElement = pinTemplate.cloneNode(true);
@@ -75,7 +71,7 @@ var createPromo = function (promo) {
     var photoPromo = photoTemplate.querySelector('li').querySelector('img');
     var photoElement = photoPromo.cloneNode(true);
     photoElement.src = promo.offer.photos[i];
-    photoElement.style.cssText = 'width:95px; height:100px;'; 
+    photoElement.style.cssText = 'width:100px; height:100px;';
     photoTemplate.querySelector('li').appendChild(photoElement);
   }
 
@@ -172,4 +168,5 @@ var createPromos = function (promosArr) {
   showMap();
 };
 createPromos(generatePromo(avatars, titles, typeApartment, checkOptions, features, photos));
+
 
