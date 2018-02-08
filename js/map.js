@@ -84,11 +84,11 @@ var createPromo = function (promo) {
   }
 
   // Добавляем новых детей
-  for (var i = 0; i < promo.offer.features.length; i++) {
+  for (var j = 0; j < promo.offer.features.length; j++) {
     var myFeatures = document.createElement('li');
 
     featureTemplate.appendChild(myFeatures);
-    myFeatures.className = 'feature feature--' + promo.offer.features[i];
+    myFeatures.className = 'feature feature--' + promo.offer.features[j];
 
   }
 
