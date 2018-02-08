@@ -79,8 +79,8 @@ var createPromo = function (promo) {
   var featureTemplate = promoElement.querySelector('.popup__features');
   var childrenFeatures = featureTemplate.querySelectorAll('li');
   // Удаляем всех детей
-  for (var i = 0; i < childrenFeatures.length; i++) {
-    featureTemplate.removeChild(childrenFeatures[i]);
+  for (var k = 0; k < childrenFeatures.length; k++) {
+    featureTemplate.removeChild(childrenFeatures[k]);
   }
 
   // Добавляем новых детей
