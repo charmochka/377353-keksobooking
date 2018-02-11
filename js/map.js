@@ -190,7 +190,7 @@ var createPromo = function (promo) {
 
 // Обработчик для активации карты
 var onPinMainClick = function (evt) {
-  if (evt.target.parentNode.className == 'map__pin map__pin--main') {
+  if (evt.target.parentNode.className === 'map__pin map__pin--main') {
     evt.stopPropagation();
     showMap();
     map.removeEventListener('mouseup', onPinMainClick);
