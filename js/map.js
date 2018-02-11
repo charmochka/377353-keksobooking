@@ -18,12 +18,100 @@ var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var typeApartment = ['flat', 'house', 'bungalo'];
 var checkOptions = ['12:00', '13:00', '14:00'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']; // нужен шафл
+var promos = generatePromo(avatars, titles, typeApartment, checkOptions, features, photos);
+var HIGHT_MAIN_BUTTON_WITH_PIN = 62;
+var WIDTH_MAIN_BUTTON = 40;
+var HIGHT_MAIN_BUTTON = 44;
 
 // Функция, которая убирает заглушку с карты
 var showMap = function () {
   document.querySelector('.map').classList.remove('map--faded');
+  removeDisabled();
+  createPins(generatePromo(avatars, titles, typeApartment, checkOptions, features, photos));
 };
 
+// Делаем поля ввода не активными
+var addDisabled = function () {
+  var fieldset = document.querySelectorAll('fieldset');
+  for (var i = 0; i < fieldset.length; i++) {
+    fieldset[i].setAttribute('disabled', 'disabled');
+  }
+};
+// Заглушка для форм
+addDisabled();
+
+// Делаем поля ввода активными
+var removeDisabled = function () {
+  var fieldset = document.querySelectorAll('fieldset');
+  for (var i = 0; i < fieldset.length; i++) {
+    fieldset[i].removeAttribute('disabled');
+  }
+};
+
+// Генерация случайных значений без повтора
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
+
+// Генерация массива случайной длинны для фич (оставляю хотябы одну фичу, иначе схлопывается контейнер и картинки выходят за пределы своего контейнера)
+// Пример: картинка здесь -> (/img/1.png)
+function getRandomFeatures(arrMainFeatures) {
+  var rand = Math.floor(Math.random() * (arrMainFeatures.length - 1));
+  return shuffleArray(arrMainFeatures).slice(0, rand + 1);
+}
+
+// Генерация случайного индекса элемента
+function getRandomElement(array) {
+  var rand = Math.floor(Math.random() * array.length);
+  return array[rand];
+}
+
+
+// Генерация случайных чисел в диапазоне
+function randomInteger(min, max) {
+  var rand = min + Math.random() * (max + 1 - min);
+  rand = Math.floor(rand);
+  return rand;
+}
+
+// Создаем объявление на основе данных из объекта
+function generatePromo(arrAvatars, arrTitles, arrTypes, arrCheckOptions, arrFeatures, arrPhotos) {
+  var randomAvatar = shuffleArray(arrAvatars);
+  var randomTitle = shuffleArray(arrTitles);
+  var arrPromos = [];
+  for (var i = 0; i < PROMO_COUNT; i++) {
+    var location = {
+      'x': randomInteger(MIN_X, MAX_X),
+      'y': randomInteger(MIN_Y, MAX_Y)
+    };
+    var promo = {
+      'author': {
+        'avatar': randomAvatar[i]
+      },
+      'offer': {
+        'title': randomTitle[i],
+        'address': location.x + ', ' + location.y,
+        'price': (randomInteger(MIN_PRICE, MAX_PRICE) + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '),
+        'type': getRandomElement(arrTypes),
+        'rooms': randomInteger(MIN_ROOMS, MAX_ROOMS),
+        'guests': randomInteger(MIN_GUESTS, MAX_GUESTS),
+        'checkin': getRandomElement(arrCheckOptions),
+        'checkout': getRandomElement(arrCheckOptions),
+        'features': getRandomFeatures(arrFeatures),
+        'description': '',
+        'photos': shuffleArray(arrPhotos)
+      }
+    };
+    arrPromos.push(promo);
+  }
+  return arrPromos;
+}
 
 // Функция, которая создает пин на основе шаблона
 var createPin = function (promo) {
@@ -37,6 +125,12 @@ var createPin = function (promo) {
   document.querySelector('.map').insertBefore(pindElement, document.querySelector('.map__filters-container'));
 };
 
+// Выводит все pin объявления на экран
+var createPins = function (promosArr) {
+  for (var i = 0; i < promosArr.length; i++) {
+    createPin(promosArr[i]);
+  }
+};
 
 // Функция, которая создает объявление на основе шаблона
 var createPromo = function (promo) {
@@ -94,79 +188,52 @@ var createPromo = function (promo) {
 
 };
 
-// Генерация случайных значений без повтора
-function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+// Обработчик для активации карты
+var onPinMainClick = function (evt) {
+  if (evt.target.parentNode.className == 'map__pin map__pin--main') {
+    evt.stopPropagation();
+    showMap();
+    map.removeEventListener('mouseup', onPinMainClick);
+    // Заполнение инпута "адрес" при активации карты
+    document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
+    document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
+
   }
-  return array;
-}
-
-// Генерация массива случайной длинны для фич (оставляю хотябы одну фичу, иначе схлопывается контейнер и картинки выходят за пределы своего контейнера)
-// Пример: картинка здесь -> (/img/1.png)
-function getRandomFeatures(arrMainFeatures) {
-  var rand = Math.floor(Math.random() * (arrMainFeatures.length - 1));
-  return shuffleArray(arrMainFeatures).slice(0, rand + 1);
-}
-
-// Генерация случайного индекса элемента
-function getRandomElement(array) {
-  var rand = Math.floor(Math.random() * array.length);
-  return array[rand];
-}
-
-
-// Генерация случайных чисел в диапазоне
-function randomInteger(min, max) {
-  var rand = min + Math.random() * (max + 1 - min);
-  rand = Math.floor(rand);
-  return rand;
-}
-
-// Создаем объявление на основе данных из объекта
-function generatePromo(arrAvatars, arrTitles, arrTypes, arrCheckOptions, arrFeatures, arrPhotos) {
-  var randomAvatar = shuffleArray(arrAvatars);
-  var randomTitle = shuffleArray(arrTitles);
-
-  var promos = [];
-  for (var i = 0; i < PROMO_COUNT; i++) {
-    var location = {
-      'x': randomInteger(MIN_X, MAX_X),
-      'y': randomInteger(MIN_Y, MAX_Y)
-    };
-    var promo = {
-      'author': {
-        'avatar': randomAvatar[i]
-      },
-      'offer': {
-        'title': randomTitle[i],
-        'address': location.x + ', ' + location.y,
-        'price': (randomInteger(MIN_PRICE, MAX_PRICE) + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '),
-        'type': getRandomElement(arrTypes),
-        'rooms': randomInteger(MIN_ROOMS, MAX_ROOMS),
-        'guests': randomInteger(MIN_GUESTS, MAX_GUESTS),
-        'checkin': getRandomElement(arrCheckOptions),
-        'checkout': getRandomElement(arrCheckOptions),
-        'features': getRandomFeatures(arrFeatures),
-        'description': '',
-        'photos': shuffleArray(arrPhotos)
-      }
-    };
-    promos.push(promo);
-  }
-  return promos;
-}
-// Выводит все объявления на экран
-var createPromos = function (promosArr) {
-  for (var i = 0; i < promosArr.length; i++) {
-    createPromo(promosArr[i]);
-    createPin(promosArr[i]);
-  }
-  showMap();
 };
-createPromos(generatePromo(avatars, titles, typeApartment, checkOptions, features, photos));
+// Обработчик для показа объявления
+// Как сократить эти сплиты?
+var onPinClick = function (evt) {
+  if (evt.target.parentNode.className == 'map__pin') {
+    evt.stopPropagation();
+    for (var i = 0; i < promos.length; i++) {
+      if (promos[i].author.avatar.split('/')[promos[i].author.avatar.split('/').length - 1] === evt.target.src.split('/')[evt.target.src.split('/').length - 1]) {
+        createPromo(promos[i]);
+      }
+    }
+  }
+};
 
 
+// Случаем события на карте
+var map = document.querySelector('.map');
+var mainPin = document.querySelector('.map__pin--main');
+map.addEventListener('mouseup', onPinMainClick);
+map.addEventListener('click', onPinClick);
+
+// Поиск координат центральной кнопки
+function getOffsetSum(elem) {
+  var top = 0;
+  var left = 0;
+  while (elem) {
+    top = top + parseFloat(elem.offsetTop);
+    left = left + parseFloat(elem.offsetLeft);
+    elem = elem.offsetParent;
+  }
+  return {top: Math.round(top), left: Math.round(left)};
+}
+
+// Заполнение инпута "адрес" при загрузке страницы
+var writeValueAddress = function () {
+  document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON / 2));
+};
+writeValueAddress();
