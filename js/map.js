@@ -27,7 +27,6 @@ var HIGHT_MAIN_BUTTON = 44;
 var showMap = function () {
   document.querySelector('.map').classList.remove('map--faded');
   removeDisabled();
-  createPins(generatePromo(avatars, titles, typeApartment, checkOptions, features, photos));
 };
 
 // Делаем поля ввода не активными
@@ -114,13 +113,13 @@ function generatePromo(arrAvatars, arrTitles, arrTypes, arrCheckOptions, arrFeat
 }
 
 // Функция, которая создает пин на основе шаблона
-var createPin = function (promo) {
+var createPin = function (promo, index) {
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   pinTemplate.querySelector('img').src = promo.author.avatar;
-
-
-  pinTemplate.style = 'left:' + randomInteger(MIN_X, MAX_X) + 'px; top: ' + randomInteger(MIN_Y, MAX_Y) + 'px;';
+  pinTemplate.style.left = randomInteger(MIN_X, MAX_X) + 'px';
+  pinTemplate.style.top = randomInteger(MIN_Y, MAX_Y) + 'px';
   var pindElement = pinTemplate.cloneNode(true);
+  pindElement.dataset.promoIndex = index;
 
   document.querySelector('.map').insertBefore(pindElement, document.querySelector('.map__filters-container'));
 };
@@ -128,7 +127,7 @@ var createPin = function (promo) {
 // Выводит все pin объявления на экран
 var createPins = function (promosArr) {
   for (var i = 0; i < promosArr.length; i++) {
-    createPin(promosArr[i]);
+    createPin(promosArr[i], i);
   }
 };
 
@@ -190,9 +189,9 @@ var createPromo = function (promo) {
 
 // Обработчик для активации карты
 var onPinMainClick = function (evt) {
-  if (evt.target.parentNode.className === 'map__pin map__pin--main') {
-    evt.stopPropagation();
+  if (evt.target.parentNode.classList.contains('map__pin--main')) {
     showMap();
+    createPins(promos);
     map.removeEventListener('mouseup', onPinMainClick);
     // Заполнение инпута "адрес" при активации карты
     document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
@@ -203,14 +202,11 @@ var onPinMainClick = function (evt) {
 // Обработчик для показа объявления
 // Как сократить эти сплиты?
 var onPinClick = function (evt) {
-  if (evt.target.parentNode.className === 'map__pin') {
-    evt.stopPropagation();
-    for (var i = 0; i < promos.length; i++) {
-      if (promos[i].author.avatar.split('/')[promos[i].author.avatar.split('/').length - 1] === evt.target.src.split('/')[evt.target.src.split('/').length - 1]) {
-        createPromo(promos[i]);
-      }
-    }
+  if (evt.target.parentNode.classList.contains('map__pin') && !evt.target.parentNode.classList.contains('map__pin--main')) {
+    var promoIndex = evt.target.parentNode.dataset.promoIndex;
+    createPromo(promos[promoIndex]);
   }
+
 };
 
 
