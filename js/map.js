@@ -203,7 +203,7 @@ var onPinMainClick = function (evt) {
 // Обработчик для показа объявления
 // Как сократить эти сплиты?
 var onPinClick = function (evt) {
-  if (evt.target.parentNode.className == 'map__pin') {
+  if (evt.target.parentNode.className === 'map__pin') {
     evt.stopPropagation();
     for (var i = 0; i < promos.length; i++) {
       if (promos[i].author.avatar.split('/')[promos[i].author.avatar.split('/').length - 1] === evt.target.src.split('/')[evt.target.src.split('/').length - 1]) {
