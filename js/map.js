@@ -116,6 +116,7 @@ function generatePromo(arrAvatars, arrTitles, arrTypes, arrCheckOptions, arrFeat
 var createPin = function (promo, index) {
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   pinTemplate.querySelector('img').src = promo.author.avatar;
+  pinTemplate.querySelector('img').style.pointerEvents = 'none';
   pinTemplate.style.left = randomInteger(MIN_X, MAX_X) + 'px';
   pinTemplate.style.top = randomInteger(MIN_Y, MAX_Y) + 'px';
   var pindElement = pinTemplate.cloneNode(true);
@@ -202,9 +203,11 @@ var onPinMainClick = function (evt) {
 // Обработчик для показа объявления
 // Как сократить эти сплиты?
 var onPinClick = function (evt) {
-  if (evt.target.parentNode.classList.contains('map__pin') && !evt.target.parentNode.classList.contains('map__pin--main')) {
-    var promoIndex = evt.target.parentNode.dataset.promoIndex;
+  if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
+    var promoIndex = evt.target.dataset.promoIndex;
     createPromo(promos[promoIndex]);
+
+
   }
 
 };
@@ -233,3 +236,4 @@ var writeValueAddress = function () {
   document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON / 2));
 };
 writeValueAddress();
+
