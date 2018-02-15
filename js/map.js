@@ -185,9 +185,7 @@ var createPromo = function (promo) {
 
     featureTemplate.appendChild(myFeatures);
     myFeatures.className = 'feature feature--' + promo.offer.features[j];
-
   }
-
 };
 
 // Обработчик для активации карты
@@ -199,7 +197,6 @@ var onPinMainClick = function (evt) {
     // Заполнение инпута "адрес" при активации карты
     document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
     document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
-
   }
 };
 // Обработчик для показа объявления
@@ -208,10 +205,7 @@ var onPinClick = function (evt) {
   if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
     var promoIndex = evt.target.dataset.promoIndex;
     createPromo(promos[promoIndex]);
-
-
   }
-
 };
 
 // Слушаем события на карте
@@ -265,7 +259,6 @@ var onCancleClick = function () {
 document.querySelector('.form__reset').addEventListener('click', onCancleClick);
 
 // Валидация формы
-
 var onSelectTimeChange = function (evt) {
   var choosen = evt.target.selectedIndex;
   document.querySelector('#timein').options[choosen].selected = true;
@@ -274,18 +267,27 @@ var onSelectTimeChange = function (evt) {
 
 // Проверка, сопоставляет тип жилья и минимальную цену, реагирует на изменение типа жилья
 var onTypeChange = function (evt) {
+
   var choosen = evt.target.selectedIndex;
-  if (document.querySelector('#type').options[choosen].value === 'flat') {
-    document.querySelector('#price').setAttribute('min', '1000');
-  } else if (document.querySelector('#type').options[choosen].value === 'bungalo') {
-    document.querySelector('#price').setAttribute('min', '0');
-  } else if (document.querySelector('#type').options[choosen].value === 'house') {
-    document.querySelector('#price').setAttribute('min', '5000');
-  } else if (document.querySelector('#type').options[choosen].value === 'palace') {
-    document.querySelector('#price').setAttribute('min', '10000');
+  var typeOfApartmentsValue = document.querySelector('#type').options[choosen].value;
+  console.log(document.querySelector('#type').options[choosen].value);
+  switch (typeOfApartmentsValue) {
+    case 'flat':
+      document.querySelector('#price').setAttribute('min', '1000');
+      break;
+    case 'bungalo':
+      document.querySelector('#price').setAttribute('min', '0');
+      break;
+    case 'house':
+      document.querySelector('#price').setAttribute('min', '5000');
+      break;
+    case 'palace':
+      document.querySelector('#price').setAttribute('min', '10000');
+      break;
   }
 };
 
+console.log(document.querySelector('#type'));
 document.querySelector('#type').addEventListener('change', onTypeChange);
 document.querySelector('#timein').addEventListener('change', onSelectTimeChange);
 document.querySelector('#timeout').addEventListener('change', onSelectTimeChange);
@@ -298,10 +300,9 @@ var validate = function () {
   var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
   var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
 
-  if (rooms == 100 && capacity != 0) {
+  if (rooms === 100 && capacity !== 0) {
     document.querySelector('#capacity').setCustomValidity('Не для гостей');
-    console.log(document.querySelector('#capacity').checkValidity());
-  } else if (capacity == 0 && rooms != 100) {
+  } else if (capacity === 0 && rooms !== 100) {
     document.querySelector('#capacity').setCustomValidity('Возможно только для 100 комнат');
   } else if (capacity > rooms) {
     document.querySelector('#capacity').setCustomValidity('Число гостей не должно привышать количество комнат');
@@ -322,3 +323,5 @@ var validate = function () {
 };
 
 document.querySelector('.form__submit').addEventListener('click', validate);
+
+
