@@ -270,7 +270,6 @@ var onTypeChange = function (evt) {
 
   var choosen = evt.target.selectedIndex;
   var typeOfApartmentsValue = document.querySelector('#type').options[choosen].value;
-  console.log(document.querySelector('#type').options[choosen].value);
   switch (typeOfApartmentsValue) {
     case 'flat':
       document.querySelector('#price').setAttribute('min', '1000');
@@ -287,7 +286,6 @@ var onTypeChange = function (evt) {
   }
 };
 
-console.log(document.querySelector('#type'));
 document.querySelector('#type').addEventListener('change', onTypeChange);
 document.querySelector('#timein').addEventListener('change', onSelectTimeChange);
 document.querySelector('#timeout').addEventListener('change', onSelectTimeChange);
