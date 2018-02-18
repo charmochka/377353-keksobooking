@@ -19,5 +19,4 @@
       createPin(promosArr[i], i);
     }
   };
-  
 })();
