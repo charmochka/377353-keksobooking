@@ -58,8 +58,8 @@
     var arrPromos = [];
     for (var i = 0; i < PROMO_COUNT; i++) {
       var location = {
-        'x': randomInteger(MIN_X, MAX_X),
-        'y': randomInteger(MIN_Y, MAX_Y)
+        'x': randomInteger(window.MIN_X, window.MAX_X),
+        'y': randomInteger(window.MIN_Y, window.MAX_Y)
       };
       var promo = {
         'author': {
