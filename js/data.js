@@ -9,10 +9,10 @@
   var MAX_ROOMS = 5;
   var MAX_GUESTS = 5;
   var MIN_GUESTS = 1;
-  var MIN_X = 300;
-  var MAX_X = 900;
-  var MIN_Y = 150;
-  var MAX_Y = 500;
+  window.MIN_X = 300;
+  window.MAX_X = 900;
+  window.MIN_Y = 150;
+  window.MAX_Y = 500;
   var avatars = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
   var titles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -58,8 +58,8 @@
     var arrPromos = [];
     for (var i = 0; i < PROMO_COUNT; i++) {
       var location = {
-        'x': randomInteger(MIN_X, MAX_X),
-        'y': randomInteger(MIN_Y, MAX_Y)
+        'x': randomInteger(window.MIN_X, window.MAX_X),
+        'y': randomInteger(window.MIN_Y, window.MAX_Y)
       };
       var promo = {
         'author': {

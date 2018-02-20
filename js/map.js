@@ -34,17 +34,6 @@
   };
 
 
-  // Обработчик для активации карты
-  var onPinMainClick = function (evt) {
-    if (evt.target.parentNode.classList.contains('map__pin--main') && document.querySelector('.map').classList.contains('map--faded')) {
-      showMap();
-      window.createPins(window.promos);
-
-      // Заполнение инпута "адрес" при активации карты
-      document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
-      document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
-    }
-  };
   // Обработчик для показа объявления
   // Как сократить эти сплиты?
   var onPinClick = function (evt) {
@@ -57,7 +46,6 @@
   // Слушаем события на карте
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-  map.addEventListener('mouseup', onPinMainClick);
   map.addEventListener('click', onPinClick);
 
   // Поиск координат центральной кнопки
@@ -76,6 +64,7 @@
   var writeValueAddress = function () {
     document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON / 2));
   };
+
   writeValueAddress();
 
   // Закрыть карту и удалить пины, объявления
@@ -103,5 +92,56 @@
     hideMap();
   };
   document.querySelector('.form__reset').addEventListener('click', onCancleClick);
-})();
 
+
+  // Перетаскивание главного пина
+  var pinHandler = document.querySelector('.map__pin--main');
+  pinHandler.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var shift = {
+      x: evt.clientX - mainPin.offsetLeft,
+      y: evt.clientY - mainPin.offsetTop
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var coordinate = {
+        x: moveEvt.clientX - shift.x,
+        y: moveEvt.clientY - shift.y
+      };
+      if (coordinate.x < window.MIN_X) {
+        coordinate.x = window.MIN_X;
+      } else if (coordinate.x > window.MAX_X) {
+        coordinate.x = window.MAX_X;
+      }
+
+      if (coordinate.y < window.MIN_Y) {
+        coordinate.y = window.MIN_Y + 'px';
+      } else if (coordinate.y > window.MAX_Y) {
+        coordinate.y = window.MAX_Y + 'px';
+      }
+      mainPin.style.top = (coordinate.y) + 'px';
+      mainPin.style.left = (coordinate.x) + 'px';
+      // Заполнение инпута "адрес"
+      document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
+
+    };
+
+      // Обработчик для активации карты
+    var onPinMainMouseUp = function (evtUp) {
+      if (evtUp.target.parentNode.classList.contains('map__pin--main') && document.querySelector('.map').classList.contains('map--faded')) {
+        showMap();
+        window.createPins(window.promos);
+      }
+
+      document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onPinMainMouseUp);
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onPinMainMouseUp);
+  });
+})();
