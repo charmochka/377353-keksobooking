@@ -46,9 +46,7 @@
   // Слушаем события на карте
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-  // map.addEventListener('mouseup', onPinMainClick);
   map.addEventListener('click', onPinClick);
-
 
   // Поиск координат центральной кнопки
   function getOffsetSum(elem) {
@@ -132,7 +130,7 @@
     };
 
       // Обработчик для активации карты
-    var onPinMainClick = function (evtUp) {
+    var onPinMainMouseUp = function (evtUp) {
       if (evtUp.target.parentNode.classList.contains('map__pin--main') && document.querySelector('.map').classList.contains('map--faded')) {
         showMap();
         window.createPins(window.promos);
@@ -141,9 +139,9 @@
       document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
 
       document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onPinMainClick);
+      document.removeEventListener('mouseup', onPinMainMouseUp);
     };
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onPinMainClick);
+    document.addEventListener('mouseup', onPinMainMouseUp);
   });
 })();
