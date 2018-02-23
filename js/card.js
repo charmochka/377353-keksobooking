@@ -25,7 +25,7 @@
       case 'house':
         promoElement.querySelector('h4').textContent = 'Дом';
         break;
-
+        
     }
 
     // Вывод картинок для объявления
@@ -53,5 +53,7 @@
       featureTemplate.appendChild(myFeatures);
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
+   // document.querySelector('.map__card').classList.remove('hidden');
   };
+
 })();

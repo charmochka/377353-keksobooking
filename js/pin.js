@@ -5,8 +5,8 @@
     var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
     pinTemplate.querySelector('img').src = promo.author.avatar;
     pinTemplate.querySelector('img').style.pointerEvents = 'none';
-    pinTemplate.style.left = promo.offer.address.split(', ')[0] + 'px';
-    pinTemplate.style.top = promo.offer.address.split(', ')[1] + 'px';
+    pinTemplate.style.left = promo.location.x + 'px';
+    pinTemplate.style.top = promo.location.y + 'px';
     var pindElement = pinTemplate.cloneNode(true);
     pindElement.dataset.promoIndex = index;
 
@@ -19,4 +19,5 @@
       createPin(promosArr[i], i);
     }
   };
+
 })();
