@@ -125,12 +125,10 @@
 var onButtonClosePopup = function (evt) {
   if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
     evt.stopPropagation();
-    console.log('CHE');
     closePopup();
   }
 };
 var closePopup = function () {
-  console.log('LOL');
   document.querySelector('.map').removeChild(document.querySelector('.map__card'));
 };
 document.querySelector('.map').addEventListener('click', onButtonClosePopup);
