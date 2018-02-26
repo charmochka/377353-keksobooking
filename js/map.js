@@ -5,14 +5,20 @@
   var WIDTH_MAIN_BUTTON = 40;
   var HIGHT_MAIN_BUTTON = 44;
 
+  // Начальные координаты пина
+  var topStylePin = getOffsetSum(document.querySelector('.map__pin--main')).top;
+  var leftStylePin = getOffsetSum(document.querySelector('.map__pin--main')).left;
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
     document.querySelector('.map').classList.toggle('map--faded', false);
     removeDisabled();
   };
   window.hideMap = function () {
+    document.querySelector('.map__pin--main').style.top = topStylePin + 'px';
+    document.querySelector('.map__pin--main').style.left = leftStylePin + 'px';
     document.querySelector('.map').classList.toggle('map--faded', true);
     window.addDisabled();
+    document.querySelector('.notice__form').classList.add('notice__form--disabled');
   };
 
   // Делаем поля ввода не активными
@@ -31,15 +37,15 @@
     for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].removeAttribute('disabled');
     }
+    document.querySelector('.notice__form').classList.remove('notice__form--disabled');
   };
 
 
   // Обработчик для показа объявления
-  // Как сократить эти сплиты?
   var onPinClick = function (evt) {
-    // document.querySelector('.map__card').classList.remove('hidden');
     if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
       var promoIndex = evt.target.dataset.promoIndex;
+      window.clearOldPromo();
       window.createPromo(window.promos[promoIndex]);
     }
   };
@@ -103,15 +109,12 @@
 
     };
 
-      // Обработчик для активации карты
-    var onPinMainMouseUp = function (evtUp) {
-      if (evtUp.target.parentNode.classList.contains('map__pin--main') && document.querySelector('.map').classList.contains('map--faded')) {
-        showMap();
-        window.createPins(window.promos);
-      }
+    // Обработчик для активации карты
+    var onPinMainMouseUp = function () {
+      showMap();
+      window.createPins(window.promos);
 
       document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
-
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onPinMainMouseUp);
     };
@@ -119,17 +122,17 @@
     document.addEventListener('mouseup', onPinMainMouseUp);
   });
 
+  var onButtonClosePopup = function (evt) {
+    if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
+      evt.stopPropagation();
+      closePopup();
+    }
+  };
+  var closePopup = function () {
+    document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+  };
+  document.querySelector('.map').addEventListener('click', onButtonClosePopup);
 
 })();
 
-var onButtonClosePopup = function (evt) {
-  if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
-    evt.stopPropagation();
-    closePopup();
-  }
-};
-var closePopup = function () {
-  document.querySelector('.map').removeChild(document.querySelector('.map__card'));
-};
-document.querySelector('.map').addEventListener('click', onButtonClosePopup);
 

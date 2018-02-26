@@ -41,7 +41,6 @@
 
     var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
     var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
-    // Если ставить ===, так как хочет слинт, то все ломается
     if (rooms === '100' && capacity !== '0') {
       document.querySelector('#capacity').setCustomValidity('Не для гостей');
     } else if (capacity === '0' && rooms !== '100') {
