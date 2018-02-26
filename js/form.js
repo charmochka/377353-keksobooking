@@ -85,7 +85,12 @@
     for (var n = 0; n < selectLength; n++) {
       document.querySelectorAll('select')[n].selectedIndex = 0;
     }
+    var featureLength = document.querySelectorAll('.feature').length; // Разобраться с тем, что стили не удаляются
+    for (var m = 0; m < featureLength; m++) {
+      document.querySelectorAll('.feature')[m].style.backgroundColor = '#fafafa';
+    }
     document.querySelector('#description').value = '';
+   
     window.hideMap();
   };
   document.querySelector('.form__reset').addEventListener('click', resetFormHandler);
