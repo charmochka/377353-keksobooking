@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-// Валидация формы
+  var form = document.querySelector('.notice__form');
+  // Валидация формы
   var onSelectTimeChange = function (evt) {
     var choosen = evt.target.selectedIndex;
     document.querySelector('#timein').options[choosen].selected = true;
@@ -40,7 +41,6 @@
 
     var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
     var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
-    // Если ставить ===, так как хочет слинт, то все ломается
     if (rooms === '100' && capacity !== '0') {
       document.querySelector('#capacity').setCustomValidity('Не для гостей');
     } else if (capacity === '0' && rooms !== '100') {
@@ -63,5 +63,38 @@
     }
   };
 
-  document.querySelector('.form__submit').addEventListener('click', validate);
+  // Закрыть карту и удалить пины, объявления
+  var resetFormHandler = function () {
+    var pinLength = document.querySelectorAll('.map__pin').length;
+    for (var i = 1; i < pinLength; i++) {
+      document.querySelectorAll('.map__pin')[1].remove();
+    }
+
+    var promoLength = document.querySelectorAll('.map__card.popup').length;
+    for (var j = 0; j < promoLength; j++) {
+      document.querySelectorAll('.map__card.popup')[0].remove();
+    }
+
+    var inputLength = document.querySelectorAll('input').length;
+    for (var k = 0; k < inputLength; k++) {
+      document.querySelectorAll('input')[k].value = '';
+    }
+
+    var selectLength = document.querySelectorAll('select').length;
+    for (var n = 0; n < selectLength; n++) {
+      document.querySelectorAll('select')[n].selectedIndex = 0;
+    }
+    document.querySelector('#description').value = '';
+    window.hideMap();
+  };
+  document.querySelector('.form__reset').addEventListener('click', resetFormHandler);
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    document.querySelector('#address').removeAttribute('disabled');
+    window.backend.upload(new FormData(form), validate, window.backend.onError);
+    resetFormHandler();
+
+  });
 })();
+

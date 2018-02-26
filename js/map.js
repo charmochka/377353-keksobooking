@@ -5,25 +5,31 @@
   var WIDTH_MAIN_BUTTON = 40;
   var HIGHT_MAIN_BUTTON = 44;
 
+  // Начальные координаты пина
+  var topStylePin = getOffsetSum(document.querySelector('.map__pin--main')).top;
+  var leftStylePin = getOffsetSum(document.querySelector('.map__pin--main')).left;
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
     document.querySelector('.map').classList.toggle('map--faded', false);
     removeDisabled();
   };
-  var hideMap = function () {
+  window.hideMap = function () {
+    document.querySelector('.map__pin--main').style.top = topStylePin + 'px';
+    document.querySelector('.map__pin--main').style.left = leftStylePin + 'px';
     document.querySelector('.map').classList.toggle('map--faded', true);
-    addDisabled();
+    window.addDisabled();
+    document.querySelector('.notice__form').classList.add('notice__form--disabled');
   };
 
   // Делаем поля ввода не активными
-  var addDisabled = function () {
+  window.addDisabled = function () {
     var fieldset = document.querySelectorAll('fieldset');
     for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].setAttribute('disabled', 'disabled');
     }
   };
   // Заглушка для форм
-  addDisabled();
+  window.addDisabled();
 
   // Делаем поля ввода активными
   var removeDisabled = function () {
@@ -31,14 +37,15 @@
     for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].removeAttribute('disabled');
     }
+    document.querySelector('.notice__form').classList.remove('notice__form--disabled');
   };
 
 
   // Обработчик для показа объявления
-  // Как сократить эти сплиты?
   var onPinClick = function (evt) {
     if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
       var promoIndex = evt.target.dataset.promoIndex;
+      window.clearOldPromo();
       window.createPromo(window.promos[promoIndex]);
     }
   };
@@ -66,33 +73,6 @@
   };
 
   writeValueAddress();
-
-  // Закрыть карту и удалить пины, объявления
-  var onCancleClick = function () {
-    var pinLength = document.querySelectorAll('.map__pin').length;
-    for (var i = 1; i < pinLength; i++) {
-      document.querySelectorAll('.map__pin')[1].remove();
-    }
-
-    var promoLength = document.querySelectorAll('.map__card.popup').length;
-    for (var j = 0; j < promoLength; j++) {
-      document.querySelectorAll('.map__card.popup')[0].remove();
-    }
-
-    var inputLength = document.querySelectorAll('input').length;
-    for (var k = 0; k < inputLength; k++) {
-      document.querySelectorAll('input')[k].value = '';
-    }
-
-    var selectLength = document.querySelectorAll('select').length;
-    for (var n = 0; n < selectLength; n++) {
-      document.querySelectorAll('select')[n].selectedIndex = 0;
-    }
-    document.querySelector('#description').value = '';
-    hideMap();
-  };
-  document.querySelector('.form__reset').addEventListener('click', onCancleClick);
-
 
   // Перетаскивание главного пина
   var pinHandler = document.querySelector('.map__pin--main');
@@ -129,19 +109,30 @@
 
     };
 
-      // Обработчик для активации карты
-    var onPinMainMouseUp = function (evtUp) {
-      if (evtUp.target.parentNode.classList.contains('map__pin--main') && document.querySelector('.map').classList.contains('map--faded')) {
-        showMap();
-        window.createPins(window.promos);
-      }
+    // Обработчик для активации карты
+    var onPinMainMouseUp = function () {
+      showMap();
+      window.createPins(window.promos);
 
       document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
-
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onPinMainMouseUp);
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onPinMainMouseUp);
   });
+
+  var onButtonClosePopup = function (evt) {
+    if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
+      evt.stopPropagation();
+      closePopup();
+    }
+  };
+  var closePopup = function () {
+    document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+  };
+  document.querySelector('.map').addEventListener('click', onButtonClosePopup);
+
 })();
+
+

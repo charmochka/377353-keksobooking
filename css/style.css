@@ -304,6 +304,7 @@ textarea:focus
     border: solid 5px #ff5635;
     border-radius: 50%;
     background: #fff;
+    pointer-events:none;
 }
 
 .map__pin--main:active img,

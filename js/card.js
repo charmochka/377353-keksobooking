@@ -54,4 +54,5 @@
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
   };
+
 })();
