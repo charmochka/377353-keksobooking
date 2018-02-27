@@ -4,6 +4,8 @@
   var HIGHT_MAIN_BUTTON_WITH_PIN = 62;
   var WIDTH_MAIN_BUTTON = 40;
   var HIGHT_MAIN_BUTTON = 44;
+  var map = document.querySelector('.map');
+  var mainPin = document.querySelector('.map__pin--main');
 
   // Начальные координаты пина
   var topStylePin = getOffsetSum(document.querySelector('.map__pin--main')).top;
@@ -13,6 +15,7 @@
     document.querySelector('.map').classList.toggle('map--faded', false);
     removeDisabled();
   };
+
   window.hideMap = function () {
     document.querySelector('.map__pin--main').style.top = topStylePin + 'px';
     document.querySelector('.map__pin--main').style.left = leftStylePin + 'px';
@@ -46,13 +49,12 @@
     if (evt.target.classList.contains('map__pin') && !evt.target.classList.contains('map__pin--main')) {
       var promoIndex = evt.target.dataset.promoIndex;
       window.clearOldPromo();
+
       window.createPromo(window.promos[promoIndex]);
     }
   };
 
   // Слушаем события на карте
-  var map = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
   map.addEventListener('click', onPinClick);
 
   // Поиск координат центральной кнопки
@@ -109,12 +111,16 @@
 
     };
 
-    // Обработчик для активации карты
+      // Обработчик для активации карты
     var onPinMainMouseUp = function () {
+
+      // .classList.contains('.map__pin.map__pin--main') { //&& document.querySelector('.map').classList.contains('map--faded')) {
       showMap();
       window.createPins(window.promos);
 
+
       document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onPinMainMouseUp);
     };
@@ -125,13 +131,14 @@
   var onButtonClosePopup = function (evt) {
     if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
       evt.stopPropagation();
-      closePopup();
+      window.closePopup();
     }
   };
-  var closePopup = function () {
+  window.closePopup = function () {
     document.querySelector('.map').removeChild(document.querySelector('.map__card'));
   };
   document.querySelector('.map').addEventListener('click', onButtonClosePopup);
+
 
 })();
 

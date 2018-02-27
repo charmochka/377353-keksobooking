@@ -24,11 +24,14 @@
     }
     PINS = 5;
   };
+
   // Удаляет открытое объявления при клике на новый пин
   window.clearOldPromo = function () {
     if (document.querySelector('.map__card')) {
       document.querySelector('.map').removeChild(document.querySelector('.map__card'));
     }
+
   };
 
 })();
+

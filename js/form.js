@@ -41,6 +41,7 @@
 
     var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
     var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
+    // Если ставить ===, так как хочет слинт, то все ломается
     if (rooms === '100' && capacity !== '0') {
       document.querySelector('#capacity').setCustomValidity('Не для гостей');
     } else if (capacity === '0' && rooms !== '100') {
@@ -64,7 +65,15 @@
   };
 
   // Закрыть карту и удалить пины, объявления
-  var resetFormHandler = function () {
+  //Удаление пинов
+  var resetFormHandler = function (evt) {
+    evt.preventDefault();
+
+    var pins = document.querySelectorAll('.map__pin');
+    //window.removePins(pins)
+   // window.removePins(window.filterPromos)      
+    //window.closePopup();
+    form.reset();
     var pinLength = document.querySelectorAll('.map__pin').length;
     for (var i = 1; i < pinLength; i++) {
       document.querySelectorAll('.map__pin')[1].remove();
@@ -75,16 +84,21 @@
       document.querySelectorAll('.map__card.popup')[0].remove();
     }
 
-    var inputLength = document.querySelectorAll('input').length;
-    for (var k = 0; k < inputLength; k++) {
-      document.querySelectorAll('input')[k].value = '';
-    }
+    // var inputLength = document.querySelectorAll('input').length;
+    // for (var k = 0; k < inputLength; k++) {
+    //   document.querySelectorAll('input')[k].value = '';
+    // }
 
-    var selectLength = document.querySelectorAll('select').length;
-    for (var n = 0; n < selectLength; n++) {
-      document.querySelectorAll('select')[n].selectedIndex = 0;
-    }
-    document.querySelector('#description').value = '';
+    // var selectLength = document.querySelectorAll('select').length;
+    // for (var n = 0; n < selectLength; n++) {
+    //   document.querySelectorAll('select')[n].selectedIndex = 0;
+    // }
+    // var featureLength = document.querySelectorAll('.feature').length; // Разобраться с тем, что стили не удаляются
+    // for (var m = 0; m < featureLength; m++) {
+    //   document.querySelectorAll('.feature')[m].style.backgroundColor = '#fafafa';
+    // }
+    // document.querySelector('#description').value = '';
+
     window.hideMap();
   };
   document.querySelector('.form__reset').addEventListener('click', resetFormHandler);
