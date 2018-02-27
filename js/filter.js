@@ -23,7 +23,7 @@
     window.filterPromos = window.promos.filter(function (promo) {
       var checkFeature = true;
       for (var i = 0; i < activFeatures.length; i++) {
-        if (promo.offer.features.indexOf(activFeatures[i].value) == -1) {
+        if (promo.offer.features.indexOf(activFeatures[i].value) === -1) {
           checkFeature = false;
           break;
         }
@@ -40,7 +40,7 @@
     for (var j = 1; j < pinLength; j++) {
       document.querySelectorAll('.map__pin')[1].remove();
     }
-    window.createPins(window.filterPromos)
+    window.createPins(window.filterPromos);
   };
   document.querySelector('.map__filters-container').addEventListener('change', onFilters);
 

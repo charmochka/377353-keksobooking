@@ -65,14 +65,14 @@
   };
 
   // Закрыть карту и удалить пины, объявления
-  //Удаление пинов
+  // Удаление пинов
   var resetFormHandler = function (evt) {
     evt.preventDefault();
 
-    var pins = document.querySelectorAll('.map__pin');
-    //window.removePins(pins)
-   // window.removePins(window.filterPromos)      
-    //window.closePopup();
+    // var pins = document.querySelectorAll('.map__pin');
+    // window.removePins(pins)
+    // window.removePins(window.filterPromos)
+    // window.closePopup();
     form.reset();
     var pinLength = document.querySelectorAll('.map__pin').length;
     for (var i = 1; i < pinLength; i++) {
@@ -83,21 +83,6 @@
     for (var j = 0; j < promoLength; j++) {
       document.querySelectorAll('.map__card.popup')[0].remove();
     }
-
-    // var inputLength = document.querySelectorAll('input').length;
-    // for (var k = 0; k < inputLength; k++) {
-    //   document.querySelectorAll('input')[k].value = '';
-    // }
-
-    // var selectLength = document.querySelectorAll('select').length;
-    // for (var n = 0; n < selectLength; n++) {
-    //   document.querySelectorAll('select')[n].selectedIndex = 0;
-    // }
-    // var featureLength = document.querySelectorAll('.feature').length; // Разобраться с тем, что стили не удаляются
-    // for (var m = 0; m < featureLength; m++) {
-    //   document.querySelectorAll('.feature')[m].style.backgroundColor = '#fafafa';
-    // }
-    // document.querySelector('#description').value = '';
 
     window.hideMap();
   };

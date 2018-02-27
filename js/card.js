@@ -54,12 +54,12 @@
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
   };
-    // Удаляет открытое объявления при клике на новый пин
-    window.clearOldPromo = function () {
-      if (document.querySelector('.map__card')) {
-        document.querySelector('.map').removeChild(document.querySelector('.map__card'));
-      }
-  
-    };
+  // Удаляет открытое объявления при клике на новый пин
+  window.clearOldPromo = function () {
+    if (document.querySelector('.map__card')) {
+      document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+    }
+
+  };
 
 })();
