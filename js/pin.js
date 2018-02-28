@@ -1,4 +1,6 @@
 'use strict';
+
+
 (function () {
   var PINS = 5;
   // Функция, которая создает пин на основе шаблона
@@ -24,13 +26,13 @@
     }
     PINS = 5;
   };
+  // Удаление пинов
+  window.removePins = function () {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-  // Удаляет открытое объявления при клике на новый пин
-  window.clearOldPromo = function () {
-    if (document.querySelector('.map__card')) {
-      document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
     }
-
   };
 
 })();

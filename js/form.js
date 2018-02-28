@@ -2,7 +2,8 @@
 
 (function () {
   var form = document.querySelector('.notice__form');
-  // Валидация формы
+
+  // Привязывает поля въезда и выезда
   var onSelectTimeChange = function (evt) {
     var choosen = evt.target.selectedIndex;
     document.querySelector('#timein').options[choosen].selected = true;
@@ -40,8 +41,8 @@
     var rooms = document.querySelector('#room_number').options[selectIndexRoom].value;
 
     var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
-    var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
-    // Если ставить ===, так как хочет слинт, то все ломается
+    var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value; 
+
     if (rooms === '100' && capacity !== '0') {
       document.querySelector('#capacity').setCustomValidity('Не для гостей');
     } else if (capacity === '0' && rooms !== '100') {
@@ -65,32 +66,17 @@
   };
 
   // Закрыть карту и удалить пины, объявления
-  // Удаление пинов
-  var resetFormHandler = function (evt) {
-    evt.preventDefault();
 
-    // var pins = document.querySelectorAll('.map__pin');
-    // window.removePins(pins)
-    // window.removePins(window.filterPromos)
-    // window.closePopup();
-    form.reset();
-    var pinLength = document.querySelectorAll('.map__pin').length;
-    for (var i = 1; i < pinLength; i++) {
-      document.querySelectorAll('.map__pin')[1].remove();
-    }
-
-    var promoLength = document.querySelectorAll('.map__card.popup').length;
-    for (var j = 0; j < promoLength; j++) {
-      document.querySelectorAll('.map__card.popup')[0].remove();
-    }
-
-    window.hideMap();
+  var resetFormHandler = function () {
+    form.reset(); // Очистить форму
+    window.removePins(); // Удалить пины
+    window.clearOldPromo(); // Удалить объявления
+    window.hideMap(); // Деактивировать карту
   };
   document.querySelector('.form__reset').addEventListener('click', resetFormHandler);
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    document.querySelector('#address').removeAttribute('disabled');
     window.backend.upload(new FormData(form), validate, window.backend.onError);
     resetFormHandler();
 

@@ -1,11 +1,12 @@
 'use strict';
 
 (function () {
+
 // Функция, которая создает объявление на основе шаблона
   window.createPromo = function (promo) {
     var promoTemplate = document.querySelector('template').content.querySelector('.map__card');
     var promoElement = promoTemplate.cloneNode(true);
-    document.querySelector('.map').insertBefore(promoElement, document.querySelector('.map__filters-container'));
+    document.querySelector('.map').insertBefore(promoElement, document.querySelector('.map__filters-container')); // Всталяем фрагмент в DOM
 
     promoElement.querySelector('h3').textContent = promo.offer.title;
     promoElement.querySelector('.popup__avatar').src = promo.author.avatar;
@@ -54,7 +55,7 @@
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
   };
-  // Удаляет открытое объявления при клике на новый пин
+  // Удаляет открытое объявление
   window.clearOldPromo = function () {
     if (document.querySelector('.map__card')) {
       document.querySelector('.map').removeChild(document.querySelector('.map__card'));

@@ -1,15 +1,15 @@
 'use strict';
 
 (function () {
+  var ENTER_KEYCODE = 13;
+  var ESC_KEYCODE = 27;
   var HIGHT_MAIN_BUTTON_WITH_PIN = 62;
   var WIDTH_MAIN_BUTTON = 40;
   var HIGHT_MAIN_BUTTON = 44;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
 
-  // Начальные координаты пина
-  var topStylePin = getOffsetSum(document.querySelector('.map__pin--main')).top;
-  var leftStylePin = getOffsetSum(document.querySelector('.map__pin--main')).left;
+
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
     document.querySelector('.map').classList.toggle('map--faded', false);
@@ -17,8 +17,6 @@
   };
 
   window.hideMap = function () {
-    document.querySelector('.map__pin--main').style.top = topStylePin + 'px';
-    document.querySelector('.map__pin--main').style.left = leftStylePin + 'px';
     document.querySelector('.map').classList.toggle('map--faded', true);
     window.addDisabled();
     document.querySelector('.notice__form').classList.add('notice__form--disabled');
@@ -113,11 +111,8 @@
 
       // Обработчик для активации карты
     var onPinMainMouseUp = function () {
-
-      // .classList.contains('.map__pin.map__pin--main') { //&& document.querySelector('.map').classList.contains('map--faded')) {
       showMap();
       window.createPins(window.promos);
-
 
       document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
 
@@ -127,6 +122,16 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onPinMainMouseUp);
   });
+
+  // Entr по главному пину
+  var onPinKeyDown = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      window.createPins(window.promos);
+      mainPin.removeEventListener('keydown', onPinKeyDown);
+    }
+  };
+
+  mainPin.addEventListener('keydown', onPinKeyDown);
 
   var onButtonClosePopup = function (evt) {
     if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
@@ -139,6 +144,14 @@
   };
   document.querySelector('.map').addEventListener('click', onButtonClosePopup);
 
+  var onClosePopupKeyDown = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      window.closePopup();
+      document.querySelector('.popup__close::after').removeEventListener('keydown', onClosePopupKeyDown);
+    }
+  };
+
+  document.querySelector('.popup__close::after').addEventListener('keydown', onClosePopupKeyDown);
 
 })();
 
