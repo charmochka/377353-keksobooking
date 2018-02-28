@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
-  var ENTER_KEYCODE = 13;
-  var ESC_KEYCODE = 27;
   var HIGHT_MAIN_BUTTON_WITH_PIN = 62;
   var WIDTH_MAIN_BUTTON = 40;
   var HIGHT_MAIN_BUTTON = 44;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
+
+  // Не получается возвращать пин на стартовые координаты
+  // Не могу добавить скролл для объявления, так как ломается верстка
 
 
   // Функция, которая убирает заглушку с карты
@@ -20,6 +21,7 @@
     document.querySelector('.map').classList.toggle('map--faded', true);
     window.addDisabled();
     document.querySelector('.notice__form').classList.add('notice__form--disabled');
+
   };
 
   // Делаем поля ввода не активными
@@ -56,20 +58,16 @@
   map.addEventListener('click', onPinClick);
 
   // Поиск координат центральной кнопки
-  function getOffsetSum(elem) {
-    var top = 0;
-    var left = 0;
-    while (elem) {
-      top = top + parseFloat(elem.offsetTop);
-      left = left + parseFloat(elem.offsetLeft);
-      elem = elem.offsetParent;
-    }
+  var getOffsetSum = function (elem) {
+    var left = elem.offsetLeft;
+    var top = elem.offsetTop;
     return {top: Math.round(top), left: Math.round(left)};
-  }
+  };
+
 
   // Заполнение инпута "адрес" при загрузке страницы
   var writeValueAddress = function () {
-    document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON / 2));
+    document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON / 2));
   };
 
   writeValueAddress();
@@ -105,7 +103,7 @@
       mainPin.style.top = (coordinate.y) + 'px';
       mainPin.style.left = (coordinate.x) + 'px';
       // Заполнение инпута "адрес"
-      document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top - HIGHT_MAIN_BUTTON_WITH_PIN));
+      document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON_WITH_PIN));
 
     };
 
@@ -125,7 +123,7 @@
 
   // Entr по главному пину
   var onPinKeyDown = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === window.ENTER_KEYCODE) {
       window.createPins(window.promos);
       mainPin.removeEventListener('keydown', onPinKeyDown);
     }
@@ -133,26 +131,4 @@
 
   mainPin.addEventListener('keydown', onPinKeyDown);
 
-  var onButtonClosePopup = function (evt) {
-    if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
-      evt.stopPropagation();
-      window.closePopup();
-    }
-  };
-  window.closePopup = function () {
-    document.querySelector('.map').removeChild(document.querySelector('.map__card'));
-  };
-  document.querySelector('.map').addEventListener('click', onButtonClosePopup);
-
-  var onClosePopupKeyDown = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      window.closePopup();
-      document.querySelector('.popup__close::after').removeEventListener('keydown', onClosePopupKeyDown);
-    }
-  };
-
-  document.querySelector('.popup__close::after').addEventListener('keydown', onClosePopupKeyDown);
-
 })();
-
-

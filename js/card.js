@@ -54,7 +54,32 @@
       featureTemplate.appendChild(myFeatures);
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
+
+    document.querySelector('.map').addEventListener('click', onButtonClosePopup);
+    document.querySelector('.map').addEventListener('keydown', onClosePopupKeyDown);
   };
+
+  var onButtonClosePopup = function (evt) {
+    if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
+      evt.stopPropagation();
+      window.closePopup();
+      document.querySelector('.map').removeEventListener('click', onButtonClosePopup);
+    }
+  };
+  window.closePopup = function () {
+    document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+
+  };
+
+
+  var onClosePopupKeyDown = function (evt) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
+      window.closePopup();
+      document.querySelector('.map').removeEventListener('keydown', onClosePopupKeyDown);
+    }
+  };
+
+
   // Удаляет открытое объявление
   window.clearOldPromo = function () {
     if (document.querySelector('.map__card')) {

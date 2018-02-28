@@ -5,6 +5,8 @@
   window.MAX_X = 900;
   window.MIN_Y = 150;
   window.MAX_Y = 500;
+  window.ESC_KEYCODE = 27;
+  window.ENTER_KEYCODE = 13;
 
   var getDataFromServer = function (response) {
 
