@@ -7,10 +7,6 @@
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
 
-  // Не получается возвращать пин на стартовые координаты
-  // Не могу добавить скролл для объявления, так как ломается верстка
-
-
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
     document.querySelector('.map').classList.toggle('map--faded', false);
@@ -42,7 +38,6 @@
     }
     document.querySelector('.notice__form').classList.remove('notice__form--disabled');
   };
-
 
   // Обработчик для показа объявления
   var onPinClick = function (evt) {

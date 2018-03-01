@@ -41,7 +41,7 @@
     var rooms = document.querySelector('#room_number').options[selectIndexRoom].value;
 
     var selectIndexCapacity = document.querySelector('#capacity').options.selectedIndex;
-    var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value; 
+    var capacity = document.querySelector('#capacity').options[selectIndexCapacity].value;
 
     if (rooms === '100' && capacity !== '0') {
       document.querySelector('#capacity').setCustomValidity('Не для гостей');
