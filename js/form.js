@@ -2,6 +2,7 @@
 
 (function () {
   var form = document.querySelector('.notice__form');
+  var formFilters = document.querySelector('.map__filters');
 
   // Привязывает поля въезда и выезда
   var onSelectTimeChange = function (evt) {
@@ -66,9 +67,9 @@
   };
 
   // Закрыть карту и удалить пины, объявления
-
   var resetFormHandler = function () {
     form.reset(); // Очистить форму
+    formFilters.reset();
     window.removePins(); // Удалить пины
     window.clearOldPromo(); // Удалить объявления
     window.hideMap(); // Деактивировать карту
@@ -81,5 +82,6 @@
     resetFormHandler();
 
   });
+
 })();
 

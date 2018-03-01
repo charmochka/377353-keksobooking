@@ -9,4 +9,5 @@
     }
     lastTimeout = window.setTimeout(act, TIMEOUT);
   };
+
 })();

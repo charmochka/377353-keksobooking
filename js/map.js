@@ -6,6 +6,7 @@
   var HIGHT_MAIN_BUTTON = 44;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
+  var pinHandler = document.querySelector('.map__pin--main');
 
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
@@ -17,7 +18,8 @@
     document.querySelector('.map').classList.toggle('map--faded', true);
     window.addDisabled();
     document.querySelector('.notice__form').classList.add('notice__form--disabled');
-
+    mainPin.style.top = '';
+    mainPin.style.left = '';
   };
 
   // Делаем поля ввода не активными
@@ -56,19 +58,19 @@
   var getOffsetSum = function (elem) {
     var left = elem.offsetLeft;
     var top = elem.offsetTop;
-    return {top: Math.round(top), left: Math.round(left)};
+    return {
+      top: Math.round(top),
+      left: Math.round(left)
+    };
   };
-
 
   // Заполнение инпута "адрес" при загрузке страницы
   var writeValueAddress = function () {
-    document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON / 2));
+    document.querySelector('#address').value = 'x:' + (getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + 'y:' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON / 2);
   };
-
   writeValueAddress();
 
   // Перетаскивание главного пина
-  var pinHandler = document.querySelector('.map__pin--main');
   pinHandler.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -84,21 +86,25 @@
         x: moveEvt.clientX - shift.x,
         y: moveEvt.clientY - shift.y
       };
-      if (coordinate.x < window.MIN_X) {
-        coordinate.x = window.MIN_X;
-      } else if (coordinate.x > window.MAX_X) {
-        coordinate.x = window.MAX_X;
-      }
 
-      if (coordinate.y < window.MIN_Y) {
-        coordinate.y = window.MIN_Y + 'px';
-      } else if (coordinate.y > window.MAX_Y) {
-        coordinate.y = window.MAX_Y + 'px';
-      }
+      coordinate.x = Math.min(
+          Math.max(
+              coordinate.x,
+              window.MIN_X
+          ),
+          window.MAX_X
+      );
+      coordinate.y = Math.min(
+          Math.max(
+              coordinate.y,
+              window.MIN_Y
+          ),
+          window.MAX_Y
+      );
       mainPin.style.top = (coordinate.y) + 'px';
       mainPin.style.left = (coordinate.x) + 'px';
       // Заполнение инпута "адрес"
-      document.querySelector('#address').value = ((getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON_WITH_PIN));
+      document.querySelector('#address').value = 'x:' + (getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + 'y:' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON_WITH_PIN);
 
     };
 

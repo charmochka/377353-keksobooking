@@ -13,6 +13,7 @@
       return 'middle';
     }
   };
+
   var onFilters = function () {
     var valueChoosenType = document.querySelector('#housing-type').value;
     var valueChoosenPrice = document.querySelector('#housing-price').value;
