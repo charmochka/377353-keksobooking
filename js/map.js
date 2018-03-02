@@ -10,8 +10,11 @@
 
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
-    document.querySelector('.map').classList.toggle('map--faded', false);
-    removeDisabled();
+    if (map.classList.contains('map--faded')) {
+      map.classList.toggle('map--faded', false);
+      removeDisabled();
+      window.createPins(window.promos);
+    }
   };
 
   window.hideMap = function () {
@@ -66,7 +69,11 @@
 
   // Заполнение инпута "адрес" при загрузке страницы
   var writeValueAddress = function () {
-    document.querySelector('#address').value = 'x:' + (getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + 'y:' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON / 2);
+    var start = getOffsetSum(mainPin);
+    document.querySelector('#address').value =
+      'x:' + (start.left - WIDTH_MAIN_BUTTON / 2)
+      + ', '
+      + 'y:' + (start.top + HIGHT_MAIN_BUTTON / 2);
   };
   writeValueAddress();
 
@@ -111,9 +118,9 @@
       // Обработчик для активации карты
     var onPinMainMouseUp = function () {
       showMap();
-      window.createPins(window.promos);
+      //
 
-      document.querySelector('#address').setAttribute('disabled', 'disabled'); // Нельзя редактировать поле адреса
+      document.querySelector('#address').setAttribute('readonly', ''); // Нельзя редактировать поле адреса
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onPinMainMouseUp);
