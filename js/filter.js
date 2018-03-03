@@ -36,9 +36,10 @@
 
     });
 
-    var pinLength = document.querySelectorAll('.map__pin').length;
+    var pins = document.querySelectorAll('.map__pin');
+    var pinLength = pins.length;
     for (var j = 1; j < pinLength; j++) {
-      document.querySelectorAll('.map__pin')[1].remove();
+      pins[1].remove();
     }
     window.createPins(window.filterPromos);
   };

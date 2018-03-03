@@ -2,11 +2,13 @@
 
 (function () {
   var PINS = 5;
+
   // Функция, которая создает пин на основе шаблона
   var createPin = function (promo, index) {
     var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
-    pinTemplate.querySelector('img').src = promo.author.avatar;
-    pinTemplate.querySelector('img').style.pointerEvents = 'none';
+    var img = pinTemplate.querySelector('img');
+    img.src = promo.author.avatar;
+    img.style.pointerEvents = 'none';
     pinTemplate.style.left = promo.location.x + 'px';
     pinTemplate.style.top = promo.location.y + 'px';
     var pindElement = pinTemplate.cloneNode(true);
@@ -16,12 +18,12 @@
   };
 
   // Выводит все pin объявления на экран
-  window.createPins = function (promosArr) {
-    if (PINS > promosArr.length) {
-      PINS = promosArr.length;
+  window.createPins = function (promos) {
+    if (PINS > promos.length) {
+      PINS = promos.length;
     }
     for (var i = 0; i < PINS; i++) {
-      createPin(promosArr[i], i);
+      createPin(promos[i], i);
     }
     PINS = 5;
   };

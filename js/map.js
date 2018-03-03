@@ -6,7 +6,6 @@
   var HIGHT_MAIN_BUTTON = 44;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-  var pinHandler = document.querySelector('.map__pin--main');
   var form = document.querySelector('.notice__form');
   var address = document.querySelector('#address');
 
@@ -80,7 +79,7 @@
   writeValueAddress();
 
   // Перетаскивание главного пина
-  pinHandler.addEventListener('mousedown', function (evt) {
+  mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var shift = {
@@ -122,7 +121,7 @@
       // Обработчик для активации карты
     var onPinMainMouseUp = function () {
       showMap();
-      //
+
 
       address.setAttribute('readonly', ''); // Нельзя редактировать поле адреса
 

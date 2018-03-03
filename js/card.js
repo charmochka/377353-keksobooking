@@ -11,21 +11,24 @@
 
     promoElement.querySelector('h3').textContent = promo.offer.title;
     promoElement.querySelector('.popup__avatar').src = promo.author.avatar;
-    promoElement.querySelectorAll('p')[0].textContent = promo.offer.address;
-    promoElement.querySelectorAll('p')[1].textContent = promo.offer.price + '/ночь';
-    promoElement.querySelectorAll('p')[2].textContent = promo.offer.rooms + ' комнаты для ' + promo.offer.guests + ' гостей';
-    promoElement.querySelectorAll('p')[3].textContent = 'Заезд после ' + promo.offer.checkin + ', выезд до ' + promo.offer.checkout;
-    promoElement.querySelectorAll('p')[4].textContent = promo.offer.description;
+    var paragraph = promoElement.querySelectorAll('p');
+    paragraph[0].textContent = promo.offer.address;
+    paragraph[1].textContent = promo.offer.price + '/ночь';
+    paragraph[2].textContent = promo.offer.rooms + ' комнаты для ' + promo.offer.guests + ' гостей';
+    paragraph[3].textContent = 'Заезд после ' + promo.offer.checkin + ', выезд до ' + promo.offer.checkout;
+    paragraph[4].textContent = promo.offer.description;
 
+
+    var heading = promoElement.querySelector('h4');
     switch (promo.offer.type) {
       case 'flat':
-        promoElement.querySelector('h4').textContent = 'Комната';
+        heading.textContent = 'Комната';
         break;
       case 'bungalo':
-        promoElement.querySelector('h4').textContent = 'Бунгало';
+        heading.textContent = 'Бунгало';
         break;
       case 'house':
-        promoElement.querySelector('h4').textContent = 'Дом';
+        heading.textContent = 'Дом';
         break;
     }
 
