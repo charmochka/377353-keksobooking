@@ -9,9 +9,8 @@
       return 'low';
     } else if (price > HIGHT_PRICE) {
       return 'high';
-    } else {
-      return 'middle';
     }
+    return 'middle';
   };
 
   var onFilters = function () {

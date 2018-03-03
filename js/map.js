@@ -7,6 +7,8 @@
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var pinHandler = document.querySelector('.map__pin--main');
+  var form = document.querySelector('.notice__form');
+  var address = document.querySelector('#address');
 
   // Функция, которая убирает заглушку с карты
   var showMap = function () {
@@ -18,9 +20,9 @@
   };
 
   window.hideMap = function () {
-    document.querySelector('.map').classList.toggle('map--faded', true);
+    map.classList.toggle('map--faded', true);
     window.addDisabled();
-    document.querySelector('.notice__form').classList.add('notice__form--disabled');
+    form.classList.add('notice__form--disabled');
     mainPin.style.top = '';
     mainPin.style.left = '';
   };
@@ -41,7 +43,7 @@
     for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].removeAttribute('disabled');
     }
-    document.querySelector('.notice__form').classList.remove('notice__form--disabled');
+    form.classList.remove('notice__form--disabled');
   };
 
   // Обработчик для показа объявления
@@ -70,7 +72,7 @@
   // Заполнение инпута "адрес" при загрузке страницы
   var writeValueAddress = function () {
     var start = getOffsetSum(mainPin);
-    document.querySelector('#address').value =
+    address.value =
       'x:' + (start.left - WIDTH_MAIN_BUTTON / 2)
       + ', '
       + 'y:' + (start.top + HIGHT_MAIN_BUTTON / 2);
@@ -111,8 +113,10 @@
       mainPin.style.top = (coordinate.y) + 'px';
       mainPin.style.left = (coordinate.x) + 'px';
       // Заполнение инпута "адрес"
-      document.querySelector('#address').value = 'x:' + (getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2) + ', ' + 'y:' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON_WITH_PIN);
-
+      address.value =
+       'x:' + (getOffsetSum(mainPin).left - WIDTH_MAIN_BUTTON / 2)
+       + ', '
+       + 'y:' + (getOffsetSum(mainPin).top + HIGHT_MAIN_BUTTON_WITH_PIN);
     };
 
       // Обработчик для активации карты
@@ -120,7 +124,7 @@
       showMap();
       //
 
-      document.querySelector('#address').setAttribute('readonly', ''); // Нельзя редактировать поле адреса
+      address.setAttribute('readonly', ''); // Нельзя редактировать поле адреса
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onPinMainMouseUp);

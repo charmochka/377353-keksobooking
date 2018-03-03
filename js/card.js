@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
 
-// Функция, которая создает объявление на основе шаблона
+  // Функция, которая создает объявление на основе шаблона
   window.createPromo = function (promo) {
     var promoTemplate = document.querySelector('template').content.querySelector('.map__card');
     var promoElement = promoTemplate.cloneNode(true);
-    document.querySelector('.map').insertBefore(promoElement, document.querySelector('.map__filters-container')); // Всталяем фрагмент в DOM
+    map.insertBefore(promoElement, document.querySelector('.map__filters-container')); // Всталяем фрагмент в DOM
 
     promoElement.querySelector('h3').textContent = promo.offer.title;
     promoElement.querySelector('.popup__avatar').src = promo.author.avatar;
@@ -26,7 +27,6 @@
       case 'house':
         promoElement.querySelector('h4').textContent = 'Дом';
         break;
-
     }
 
     // Вывод картинок для объявления
@@ -55,37 +55,34 @@
       myFeatures.className = 'feature feature--' + promo.offer.features[j];
     }
 
-    document.querySelector('.map').addEventListener('click', onButtonClosePopup);
-    document.querySelector('.map').addEventListener('keydown', onClosePopupKeyDown);
+    map.addEventListener('click', onButtonClosePopup);
+    map.addEventListener('keydown', onClosePopupKeyDown);
   };
 
   var onButtonClosePopup = function (evt) {
     if ((evt.target === document.querySelector('.popup__close')) || (evt.target.className === 'popup__close')) {
       evt.stopPropagation();
       window.closePopup();
-      document.querySelector('.map').removeEventListener('click', onButtonClosePopup);
+      map.removeEventListener('click', onButtonClosePopup);
     }
   };
   window.closePopup = function () {
-    document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+    map.removeChild(document.querySelector('.map__card'));
 
   };
-
 
   var onClosePopupKeyDown = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
       window.closePopup();
-      document.querySelector('.map').removeEventListener('keydown', onClosePopupKeyDown);
+      map.removeEventListener('keydown', onClosePopupKeyDown);
     }
   };
-
 
   // Удаляет открытое объявление
   window.clearOldPromo = function () {
     if (document.querySelector('.map__card')) {
-      document.querySelector('.map').removeChild(document.querySelector('.map__card'));
+      map.removeChild(document.querySelector('.map__card'));
     }
-
   };
 
 })();
